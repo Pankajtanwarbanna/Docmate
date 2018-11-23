@@ -1,0 +1,518 @@
+<div>
+    <div class="step-first text-center" ng-show="docmate.step==1">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Personal Information</div>
+            <div class="panel-body">
+                <b>Welcome to Docmate!</b>
+                <br>
+                Here we help you to find the reason behind your symptoms.<br>
+                Let's get started by entering your information
+                <br>
+                <br>
+                <form ng-submit="docmate.register(infoData);" style="display: inline-block;">
+                    <label>Gender  </label>
+                    <br>
+                    <input type="radio" ng-model="docmate.infoData.gender" value="Male"> Male &nbsp;&nbsp;&nbsp;
+                    <input type="radio" ng-model="docmate.infoData.gender" value="Female"> Female
+                    <br>
+                    <br>
+                    <label>Age :</label>
+                    <select ng-model="docmate.infoData.age" class="form-control" style="width: 100%;">
+                        <option value="0-2">0-2 Years</option>
+                        <option value="3-6">3-6 Years</option>
+                        <option value="7-12">7-12 Years</option>
+                        <option value="13-17">13-17 Years</option>
+                        <option value="18-24">18-24 Years</option>
+                        <option value="25-34">25-34 Years</option>
+                        <option value="35-44">35-44 Years</option>
+                        <option value="45-54">45-54 Years</option>
+                        <option value="55-64">55-64 Years</option>
+                        <option value="65+">65+</option>
+                    </select>
+                    <br>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Next</button>
+                </form>
+                <br>
+                <br>
+                <div class="alert alert-danger" ng-show="docmate.errorMsg">
+                    <strong>Oops !</strong> {{ docmate.errorMsg }}
+                </div>
+            </div>
+            <div class="panel-footer">
+                <!-- Circles which indicates the steps of the form: -->
+                <div style="text-align:center;">
+                    <span class="step" style="background-color: green;"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- end first step -->
+
+    <!-- Start second step -->
+    <div class="step-second" ng-show="docmate.step==2">
+        <div class="panel panel-primary">
+            <div class="panel-heading text-center">Symptoms</div>
+            <div class="panel-body">
+                <div style="float: left;">
+                    Gender : <b> {{ docmate.gender }}</b> | Age : <b>{{ docmate.age }} Years </b>
+                </div>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                Choose Symptoms
+                            </div>
+                            <div class="panel-body">
+                                Select the symptom from the drop down list :
+                                <br>
+                                <br>
+                                <b>Symptoms :</b>
+                                <form>
+                                    <select ng-model="docmate.symptom" class="form-control" ng-change="docmate.selectSymp(docmate.symptom)">
+                                        <option ng-repeat="symptom in docmate.symptoms">{{ symptom }}</option>
+                                    </select>
+                                </form>
+                                <div class="alert alert-danger" ng-show="docmate.errorMsg">
+                                    <strong>Oops !</strong> {{ docmate.errorMsg }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                Your Choices
+                            </div>
+                            <div class="panel-body">
+                                You selected Symptoms :
+                                <br>
+                                <div ng-repeat="choicesymptom in docmate.selectedSymp">
+                                    <div class="col-sm-11">
+                                        <button class="btn btn-danger" style="margin: 5px;width: 100%;" ng-click="docmate.removeSymp(choicesymptom)"><b style="float: left;">{{ choicesymptom }}</b>  &nbsp;<b style="float: right;">&nbsp;x </b></button>
+                                    </div>
+                                    <div class="col-sm-1" data-toggle="modal" data-target="#myModal">
+                                        <button class="btn btn-link" ng-show="choicesymptom=='FEVER'"><span class="glyphicon glyphicon-pencil" style="float: left;"></span></button>
+                                    </div>
+                                </div>
+                                <br>
+                                <!--<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Refine your Symptoms</button> -->
+                                <!-- {{ docmate.temp }} -->
+                                <!-- Modal -->
+                                <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Refine your Symptoms :</h4>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <div class="first-question" ng-show="docmate.feverStep==1">
+                                                    <form ng-submit="docmate.feverTemp();">
+                                                        <h5><b>Select Fever Temperature : </b> </h5>
+                                                        <input type="radio" value="99.0 F - 100.9 F" ng-model="docmate.temp"> 99.0 F - 100.9 F
+                                                        <br>
+                                                        <input type="radio" value="101 F - 103.5 F" ng-model="docmate.temp"> 101 F - 103.5 F
+                                                        <br>
+                                                        <input type="radio" value="Over 103.5 F" ng-model="docmate.temp"> Over 103.5 F
+                                                        <br>
+                                                        <input type="radio" value="None" ng-model="docmate.temp"> None of the above
+                                                        <br>
+                                                        <br>
+                                                        <div class="model-box-button">
+                                                            <button type="button" class="btn btn-success" ng-click="docmate.Firstskip();">Skip</button>
+                                                            <button type="submit" class="btn btn-primary">Next</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                                <div class="second-question" ng-show="docmate.feverStep==2">
+                                                    <form ng-submit="docmate.feverDays();">
+                                                        <h5><b>From how many days you have Fever ? </b> </h5>
+                                                        <input type="radio" value="1" ng-model="docmate.days"> 1 Day
+                                                        <br>
+                                                        <input type="radio" value="2" ng-model="docmate.days"> 2 Days
+                                                        <br>
+                                                        <input type="radio" value="3" ng-model="docmate.days"> 3 Days
+                                                        <br>
+                                                        <input type="radio" value="3+" ng-model="docmate.days"> More then 3 Days
+                                                        <br>
+                                                        <div class="model-box-button">
+                                                            <button type="button" class="btn btn-success" ng-click="docmate.secondSkip();"> Skip </button>
+                                                            <button type="submit" class="btn btn-primary"> Submit </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <div class="alert alert-danger" ng-show="docmate.ModelerrorMsg">
+                                                <strong>Oops !</strong> {{ docmate.ModelerrorMsg }}
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="docmate.numberofSelectedSymptoms > 0">
+                                    <!--  -->
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <button ng-click="docmate.next();" class="btn btn-primary" style="float: right;"> Next </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <!-- Circles which indicates the steps of the form: -->
+                <div style="text-align:center;">
+                    <span class="step" style="background-color: goldenrod;"></span>
+                    <span class="step" style="background-color: green;"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- End Second Step -->
+
+    <!-- Start third Step -->
+    <div class="step-third" ng-show="docmate.step==3">
+        <div class="panel panel-primary">
+            <div class="panel-heading text-center">Diseases</div>
+            <div class="panel-body">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        Predicted Diseases
+                    </div>
+                    <div class="panel-body">
+
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <button class="disease text-left col-sm-6" ng-click="docmate.details('ACUTE SINUSITIS');"> <b>ACUTE SINUSITIS </b></button>
+                                    <div class="progress col-sm-6 left-align">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100" style="width:93%">
+                                            93%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="disease text-left col-sm-6" ng-click="docmate.details('VIRAL PHARYNGITIS');"> <b>VIRAL PHARYNGITIS </b></button>
+                                    <div class="progress col-sm-6 left-align">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100" style="width:88%">
+                                            88%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="disease text-left col-sm-6" ng-click="docmate.details('GASTROENTERITIS');"> <b>GASTROENTERITIS </b></button>
+                                    <div class="progress col-sm-6 left-align">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100" style="width:85%">
+                                            85%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="disease text-left col-sm-6" ng-click="docmate.details('INFLUENZA (FLU) ADULTS');"> <b> INFLUENZA (FLU) ADULTS </b></button>
+                                    <div class="progress col-sm-6 left-align">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100" style="width:72%">
+                                            72%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="disease text-left col-sm-6" ng-click="docmate.details('BACTERIAL PNEUMONIA');"> <b>BACTERIAL PNEUMONIA </b></button>
+                                    <div class="progress col-sm-6 left-align">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100" style="width:45%">
+                                            45%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="disease text-left col-sm-6" ng-click="docmate.details('MEDICATION REACTION');"> <b>MEDICATION REACTION OR SIDE EFFECT </b></button>
+                                    <div class="progress col-sm-6 left-align">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                                            40%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--<button ng-click="docmate.details();" class="btn btn-primary" style="float: right;">Next</button> -->
+            </div>
+            <div class="panel-footer">
+                <!-- Circles which indicates the steps of the form: -->
+                <div style="text-align:center;">
+                    <span class="step" style="background-color: goldenrod;"></span>
+                    <span class="step" style="background-color: goldenrod;"></span>
+                    <span class="step" style="background-color: green;"></span>
+                    <span class="step"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Third step end -->
+    <!-- Fourth Step Start -->
+    <div class="step-foruth" ng-show="docmate.step==4">
+        <div class="panel panel-primary">
+            <div class="panel-heading text-center">Details</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12" ng-show="docmate.disease=='ACUTE SINUSITIS'">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                ACUTE SINUSITIS
+                            </div>
+                            <div class="panel-body">
+                                <h4>ACUTE SINUSITIS SYMPTOMS</h4>
+                                <span class="label label-success" style="float: left;margin-right: 0.5em;" ng-repeat="choicesymptom in docmate.selectedSymp">{{ choicesymptom }}</span>&nbsp;
+                                <span class="label label-default" style="float: left;margin-left: 5px;">Cough</span>
+                                <h4>Overview :</h4>
+                                A stuffed nose and pressure on the checkbones, near the eyes or over the forehead may mean that you have acute sinusities.
+                                <br>
+                                <br>
+                                Acute Sinusitis, also called acute rhinosinusitis, is a short term inflamation of the membranes that line your nose and surrounding sinuses.
+                                <br>
+                                <br>
+                                Acute sinusitis is most commonly due to a cold causing viral infection. However, it can be due to noninfectious causes as well. According to the American Academy of Otolaryngology, acute sinusitis is common. It affects around 1 in 8 adults per year.
+                                <br>
+                                <br>
+                                <b>Symptoms :</b>
+                                <form ng-submit="docmate.addnewsymptom(docmate.newsymptom);">
+                                    <select ng-model="docmate.newsymptom" class="form-control">
+                                        <option ng-repeat="symptom in docmate.symptoms">{{ symptom }}</option>
+                                    </select>
+                                    <br>
+                                    <button class="btn btn-sm btn-success"> Add Symptom</button>
+                                </form>
+                                <br>
+                                <div class="alert alert-danger" ng-show="docmate.errorMsg">
+                                    <strong>Oops !</strong> {{ docmate.errorMsg }}
+                                </div>
+                                <div class="alert alert-success" ng-show="docmate.successMsg">
+                                    <strong>Yay !</strong> {{ docmate.successMsg }}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" ng-show="docmate.disease=='VIRAL PHARYNGITIS'">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                VIRAL PHARYNGITIS
+                            </div>
+                            <div class="panel-body">
+                                <h4>VIRAL PHARYNGITIS SYMPTOMS</h4>
+                                <span class="label label-success" style="float: left;margin-right: 0.5em;" ng-repeat="choicesymptom in docmate.selectedSymp">{{ choicesymptom }}</span>&nbsp;
+                                <span class="label label-default" style="float: left;margin-left: 5px;">Cough</span>
+                                <h4>Overview :</h4>
+                                Pharyngitis is inflammation of the pharynx, which is in the back of the throat. It’s most often referred to simply as “sore throat.” Pharyngitis can also cause scratchiness in the throat and difficulty swallowing.
+                                <br>
+                                <br>
+                                According to the American Osteopathic Association (AOA), pharyngitis-induced sore throat is one of the most common reasons for doctor visits. More cases of pharyngitis occur during the colder months of the year. It’s also one of the most common reasons why people stay home from work. In order to properly treat a sore throat, it’s important to identify its cause. Pharyngitis may be caused by bacterial or viral infections.
+                                <br>
+                                <br>
+                                <b>Symptoms :</b>
+                                <form ng-submit="docmate.addnewsymptom(docmate.newsymptom);">
+                                    <select ng-model="docmate.newsymptom" class="form-control">
+                                        <option ng-repeat="symptom in docmate.symptoms">{{ symptom }}</option>
+                                    </select>
+                                    <br>
+                                    <button class="btn btn-sm btn-success"> Add Symptom</button>
+                                </form>
+                                <br>
+                                <div class="alert alert-danger" ng-show="docmate.errorMsg">
+                                    <strong>Oops !</strong> {{ docmate.errorMsg }}
+                                </div>
+                                <div class="alert alert-success" ng-show="docmate.successMsg">
+                                    <strong>Yay !</strong> {{ docmate.successMsg }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" ng-show="docmate.disease=='GASTROENTERITIS'">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                GASTROENTERITIS
+                            </div>
+                            <div class="panel-body">
+                                <h4>GASTROENTERITIS SYMPTOMS</h4>
+                                <span class="label label-success" style="float: left;margin-right: 0.5em;" ng-repeat="choicesymptom in docmate.selectedSymp">{{ choicesymptom }}</span>&nbsp;
+                                <span class="label label-default" style="float: left;margin-left: 5px;">Cough</span>
+                                <h4>Overview :</h4>
+                                When you have diarrhea and vomiting, you may say you have the "stomach flu." These symptoms often are due to a condition called gastroenteritis.
+                                <br>
+                                <br>
+                                With gastroenteritis, your stomach and intestines are irritated and inflamed. The cause is typically a viral or bacterial infection.
+                                <br>
+                                <br>
+                                Because of diarrhea and vomiting, you also can become dehydrated. Watch for signs of dehydration, such as dry skin and a dry mouth, feeling lightheaded, and being really thirsty. Call your doctor if you have any of these symptoms.
+                                <br>
+                                <br>
+                                <b>Symptoms :</b>
+                                <form ng-submit="docmate.addnewsymptom(docmate.newsymptom);">
+                                    <select ng-model="docmate.newsymptom" class="form-control">
+                                        <option ng-repeat="symptom in docmate.symptoms">{{ symptom }}</option>
+                                    </select>
+                                    <br>
+                                    <button class="btn btn-sm btn-success"> Add Symptom</button>
+                                </form>
+                                <br>
+                                <div class="alert alert-danger" ng-show="docmate.errorMsg">
+                                    <strong>Oops !</strong> {{ docmate.errorMsg }}
+                                </div>
+                                <div class="alert alert-success" ng-show="docmate.successMsg">
+                                    <strong>Yay !</strong> {{ docmate.successMsg }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12" ng-show="docmate.disease=='INFLUENZA (FLU) ADULTS'">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                INFLUENZA (FLU) ADULTS
+                            </div>
+                            <div class="panel-body">
+                                <h4>INFLUENZA (FLU) ADULTS SYMPTOMS</h4>
+                                <span class="label label-success" style="float: left;margin-right: 0.5em;" ng-repeat="choicesymptom in docmate.selectedSymp">{{ choicesymptom }}</span>&nbsp;
+                                <span class="label label-default" style="float: left;margin-left: 5px;">Cough</span>
+                                <h4>Overview :</h4>
+                                Influenza is a viral infection that attacks your respiratory system — your nose, throat and lungs. Influenza is commonly called the flu, but it's not the same as stomach "flu" viruses that cause diarrhea and vomiting.
+                                <br>
+                                <br>
+                                For most people, influenza resolves on its own. But sometimes, influenza and its complications can be deadly.
+                                <br>
+                                <br>
+                                <b>Symptoms :</b>
+                                <form ng-submit="docmate.addnewsymptom(docmate.newsymptom);">
+                                    <select ng-model="docmate.newsymptom" class="form-control">
+                                        <option ng-repeat="symptom in docmate.symptoms">{{ symptom }}</option>
+                                    </select>
+                                    <br>
+                                    <button class="btn btn-sm btn-success"> Add Symptom</button>
+                                </form>
+                                <br>
+                                <div class="alert alert-danger" ng-show="docmate.errorMsg">
+                                    <strong>Oops !</strong> {{ docmate.errorMsg }}
+                                </div>
+                                <div class="alert alert-success" ng-show="docmate.successMsg">
+                                    <strong>Yay !</strong> {{ docmate.successMsg }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" ng-show="docmate.disease=='BACTERIAL PNEUMONIA'">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                BACTERIAL PNEUMONIA
+                            </div>
+                            <div class="panel-body">
+                                <h4>BACTERIAL PNEUMONIA SYMPTOMS</h4>
+                                <span class="label label-success" style="float: left;margin-right: 0.5em;" ng-repeat="choicesymptom in docmate.selectedSymp">{{ choicesymptom }}</span>&nbsp;
+                                <span class="label label-default" style="float: left;margin-left: 5px;">Cough</span>
+                                <h4>Overview :</h4>
+                                Pneumonia is a common lung infection where the lungs’ air sacks become inflamed. These sacs may also fill with fluid, pus, and cellular debris. It can be caused by viruses, fungi, or bacteria.
+                                <br>
+                                <br>
+                                Bacterial pneumonia may involve just one small section of your lung, or it may encompass your entire lung.
+                                <br>
+                                <br>
+                                <b>Symptoms :</b>
+                                <form ng-submit="docmate.addnewsymptom(docmate.newsymptom);">
+                                    <select ng-model="docmate.newsymptom" class="form-control">
+                                        <option ng-repeat="symptom in docmate.symptoms">{{ symptom }}</option>
+                                    </select>
+                                    <br>
+                                    <button class="btn btn-sm btn-success"> Add Symptom</button>
+                                </form>
+                                <br>
+                                <div class="alert alert-danger" ng-show="docmate.errorMsg">
+                                    <strong>Oops !</strong> {{ docmate.errorMsg }}
+                                </div>
+                                <div class="alert alert-success" ng-show="docmate.successMsg">
+                                    <strong>Yay !</strong> {{ docmate.successMsg }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="panel panel-primary" ng-show="docmate.disease=='MEDICATION REACTION'">
+                            <div class="panel-heading">
+                                MEDICATION REACTION OR SIDE EFFECT
+                            </div>
+                            <div class="panel-body">
+                                <h4>MEDICATION REACTION OR SIDE EFFECT SYMPTOMS</h4>
+                                <span class="label label-success" style="float: left;margin-right: 0.5em;" ng-repeat="choicesymptom in docmate.selectedSymp">{{ choicesymptom }}</span>&nbsp;
+                                <span class="label label-default" style="float: left;margin-left: 5px;">Cough</span>
+                                <h4>Overview :</h4>
+                                Prescription drugs heal us when we're sick, ease our pain when we ache, and prevent or control long-term conditions. But sometimes, even when they do the job they're supposed to, they have unwelcome side effects
+                                <br>
+                                <br>
+                                Don't let that make you automatically rule out a medication
+                                <br>
+                                <br>
+                                <b>Symptoms :</b>
+                                <form ng-submit="docmate.addnewsymptom(docmate.newsymptom);">
+                                    <select ng-model="docmate.newsymptom" class="form-control">
+                                        <option ng-repeat="symptom in docmate.symptoms">{{ symptom }}</option>
+                                    </select>
+                                    <br>
+                                    <button class="btn btn-sm btn-success"> Add Symptom</button>
+                                </form>
+                                <br>
+                                <div class="alert alert-danger" ng-show="docmate.errorMsg">
+                                    <strong>Oops !</strong> {{ docmate.errorMsg }}
+                                </div>
+                                <div class="alert alert-success" ng-show="docmate.successMsg">
+                                    <strong>Yay !</strong> {{ docmate.successMsg }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/">
+                    <button class="btn btn-primary" style="float: right;">Finish</button>
+                </a>
+            </div>
+            <div class="panel-footer">
+                <!-- Circles which indicates the steps of the form: -->
+                <div style="text-align:center;">
+                    <span class="step" style="background-color: goldenrod;"></span>
+                    <span class="step" style="background-color: goldenrod;"></span>
+                    <span class="step" style="background-color: goldenrod;"></span>
+                    <span class="step" style="background-color: green;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

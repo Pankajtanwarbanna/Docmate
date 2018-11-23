@@ -1,0 +1,55 @@
+* {
+    font-family: sans-serif;
+}
+body {
+    background-color: black;
+    background-size: cover;
+}
+h1 {
+    color: white;
+}
+.jumbotron {
+    background-color: transparent;
+    color: black;
+}
+
+.top-div {
+    background-color: blue;
+    height: 150px;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbbbbb;
+    border: none;
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+}
+
+td {
+    color: #337ab7;
+}
+.label {
+    float: right;
+}
+.index-image {
+    width :40%;
+    height: 40%;
+}
+.disease {
+    background-color: transparent;
+    border-color: transparent;
+}
+.percent {
+    margin-top: 0.5em;
+}
+.left-align {
+    padding-left: 0px;
+}
+.model-box-button {
+    float: right;
+}
